@@ -22,10 +22,13 @@ def main():
     completion_tokes = 0
     total_tokens_used = 0
     cost_of_response = 0
-    st.session_state.triggered_enter = False
+    # st.session_state.triggered_enter = False
 
     # set header
     st.header("OpenAI ChatGPT API interface")
+
+    # Display response in scrollable area
+    response_area = st.empty()
 
     # st.markdown("""---""")
     with st.form(key='request_form'):
@@ -33,16 +36,15 @@ def main():
         submit_button = st.form_submit_button(label='Submit',
                                               help="Press CMD/Ctrl + Enter to send the message",
                                               )
-        if submit_button:
+        if submit_button or st.session_state.triggered_enter:
             response = make_request(question_input)
         else:
             pass
 
-    st.markdown("""---""")
-    st.write("Response:")
     if response:
-        # st.write("Response:")
-        st.write(response["choices"][0]["message"]["content"])
+        response_text = response["choices"][0]["message"]["content"]
+        response_area.text_area(label="Response", value=response_text, height=150)
+        st.markdown("""---""")
 
         prompt_tokens = response["usage"]["prompt_tokens"]
         completion_tokes = response["usage"]["completion_tokens"]
