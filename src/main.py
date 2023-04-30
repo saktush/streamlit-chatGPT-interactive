@@ -1,6 +1,8 @@
 import streamlit as st
 import openai
 import os
+import sys
+from typing import Dict, List
 
 
 def make_request(question_input: str):
@@ -24,21 +26,22 @@ def main():
 
     # set header
     st.header("OpenAI ChatGPT API interface")
-    st.markdown("""---""")
 
-    with st.form(key='my_form'):
+    # st.markdown("""---""")
+    with st.form(key='request_form'):
         question_input = st.text_area("Enter question and push Enter to send", height=150)
         submit_button = st.form_submit_button(label='Submit',
-                                              help="Press CMD/Ctrl + Enter to send the message")
+                                              help="Press CMD/Ctrl + Enter to send the message",
+                                              )
         if submit_button:
             response = make_request(question_input)
         else:
             pass
 
     st.markdown("""---""")
-
+    st.write("Response:")
     if response:
-        st.write("Response:")
+        # st.write("Response:")
         st.write(response["choices"][0]["message"]["content"])
 
         prompt_tokens = response["usage"]["prompt_tokens"]
@@ -46,9 +49,6 @@ def main():
         total_tokens_used = response["usage"]["total_tokens"]
 
         cost_of_response = total_tokens_used * 0.000002
-
-    else:
-        pass
 
     with st.sidebar:
         st.title("Usage Stats:")
