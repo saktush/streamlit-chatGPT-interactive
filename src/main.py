@@ -21,7 +21,7 @@ def main():
     cost_of_response = 0
     st.session_state.triggered_enter = False
     st.set_page_config(
-        page_title="Ex-stream-ly Cool App",
+        page_title="GPT 3.5 Local",
         page_icon="🧊",
         layout="centered",
         initial_sidebar_state="expanded",
@@ -42,7 +42,7 @@ def main():
         response_area = st.empty()
         question_input = st.text_area("Enter question and push Submit", height=150)
         submit_button = st.form_submit_button(label='Submit',
-                                              help="Press CMD/Ctrl + Enter to send the message",
+                                              help="Press CMD/Ctrl + Enter to send a request",
                                               )
         if submit_button or st.session_state.triggered_enter:
             response = make_request(question_input)
@@ -58,7 +58,6 @@ def main():
             prompt_tokens = response["usage"]["prompt_tokens"]
             completion_tokes = response["usage"]["completion_tokens"]
             total_tokens_used = response["usage"]["total_tokens"]
-
             cost_of_response = total_tokens_used * 0.000002
 
     with st.sidebar:
