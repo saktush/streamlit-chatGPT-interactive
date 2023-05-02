@@ -1,5 +1,6 @@
-import streamlit as st
 import openai
+import streamlit as st
+from decouple import config
 
 
 def make_request(question_input: str):
@@ -70,8 +71,7 @@ def main():
 
 
 if __name__ == '__main__':
-    # TODO: API KEY IMPORT - it will be grate to import api key from some app
-    API_KEY = ""
+    API_KEY = config('OPENAI_API_KEY')
     openai.api_key = API_KEY
     # TODO: think about running code with shell file
     main()
