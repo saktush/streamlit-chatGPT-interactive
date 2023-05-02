@@ -3,7 +3,17 @@ import streamlit as st
 from decouple import config
 
 
-def make_request(question_input: str):
+# define function to make request to OpenAI API
+def make_request(question_input: str) -> str:
+    """
+    This function makes a request to OpenAI ChatCompletion API and returns the response received
+
+    Parameters:
+    question_input (str) : The question input by user
+
+    Returns: response str
+    response : Response received from OpenAI ChatCompletion API
+    """
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
@@ -13,14 +23,16 @@ def make_request(question_input: str):
     return response
 
 
+# main function to display the form and handle the response
 def main():
-    # set basics
+    # set initial values for variables
     response = False
     prompt_tokens = 0
     completion_tokes = 0
     total_tokens_used = 0
     cost_of_response = 0
     st.session_state.triggered_enter = False
+    # set page configuration for Streamlit
     st.set_page_config(
         page_title="GPT 3.5 Local",
         page_icon="🧊",
@@ -33,24 +45,20 @@ def main():
         }
     )
 
-    # set header
+    # set header for the page
     st.header("OpenAI ChatGPT API interface")
 
-    # Display response in scrollable area
-
-    # st.markdown("""---""")
+    # create form to take input from user
     with st.form(key='request_form'):
-        response_area = st.empty()
+        response_area = st.empty()  # used to show response from OpenAI API
         question_input = st.text_area("Enter question and push Submit", height=150)
-        submit_button = st.form_submit_button(label='Submit',
-                                              help="Press CMD/Ctrl + Enter to send a request",
-                                              )
+        submit_button = st.form_submit_button(label='Submit', help="Push the button!")
         if submit_button or st.session_state.triggered_enter:
             response = make_request(question_input)
         else:
             pass
 
-        # show response
+        # display response from OpenAI API
         if response:
             response_text = response["choices"][0]["message"]["content"]
             response_area.text_area(label="Response", value=response_text, height=150)
@@ -61,6 +69,7 @@ def main():
             total_tokens_used = response["usage"]["total_tokens"]
             cost_of_response = total_tokens_used * 0.000002
 
+    # create sidebar to show usage statistics
     with st.sidebar:
         st.title("Usage Stats:")
         st.markdown("""---""")
@@ -70,9 +79,9 @@ def main():
         st.write("Total cost of request: ${:.8f}".format(cost_of_response))
 
 
+# run the main function
 if __name__ == '__main__':
+    # set OpenAI API key
     API_KEY = config('OPENAI_API_KEY')
     openai.api_key = API_KEY
-    # TODO: think about running code with shell file
     main()
-    pass
