@@ -4,7 +4,7 @@ from decouple import config
 
 
 # define function to make request to OpenAI API
-def make_request(question_input: str) -> str:
+def make_request(prompt: str) -> str:
     """
     This function makes a request to OpenAI ChatCompletion API and returns the response received
 
@@ -17,7 +17,7 @@ def make_request(question_input: str) -> str:
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "user", "content": f"{question_input}"},
+            {"role": "user", "content": f"{prompt}"},
         ]
     )
     return response
@@ -68,6 +68,8 @@ def main():
             completion_tokes = response["usage"]["completion_tokens"]
             total_tokens_used = response["usage"]["total_tokens"]
             cost_of_response = total_tokens_used * 0.000002
+        else:
+            response_area.text_area(label="Response", value="...", height=150, disabled=True)
 
     # create sidebar to show usage statistics
     with st.sidebar:
