@@ -17,9 +17,14 @@ def make_request(prompt: str) -> str:
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
+            {
+                "role": "system",
+                "content": "You are experienced python developer and you love minimalistic code",
+            },
             {"role": "user", "content": f"{prompt}"},
-        ]
+        ],
     )
+    print(response)
     return response
 
 
@@ -39,20 +44,20 @@ def main():
         layout="centered",
         initial_sidebar_state="expanded",
         menu_items={
-            'Get Help': 'https://www.extremelycoolapp.com/help',
-            'Report a bug': "https://www.extremelycoolapp.com/bug",
-            'About': "# This is a header. This is an *extremely* cool app!"
-        }
+            "Get Help": "https://www.extremelycoolapp.com/help",
+            "Report a bug": "https://www.extremelycoolapp.com/bug",
+            "About": "# This is a header. This is an *extremely* cool app!",
+        },
     )
 
     # set header for the page
     st.header("OpenAI ChatGPT API interface")
 
     # create form to take input from user
-    with st.form(key='request_form'):
+    with st.form(key="request_form"):
         response_area = st.empty()  # used to show response from OpenAI API
         question_input = st.text_area("Enter question and push Submit", height=150)
-        submit_button = st.form_submit_button(label='Submit', help="Push the button!")
+        submit_button = st.form_submit_button(label="Submit", help="Push the button!")
         if submit_button or st.session_state.triggered_enter:
             response = make_request(question_input)
         else:
@@ -69,7 +74,9 @@ def main():
             total_tokens_used = response["usage"]["total_tokens"]
             cost_of_response = total_tokens_used * 0.000002
         else:
-            response_area.text_area(label="Response", value="...", height=150, disabled=True)
+            response_area.text_area(
+                label="Response", value="...", height=150, disabled=True
+            )
 
     # create sidebar to show usage statistics
     with st.sidebar:
@@ -82,8 +89,8 @@ def main():
 
 
 # run the main function
-if __name__ == '__main__':
+if __name__ == "__main__":
     # set OpenAI API key
-    API_KEY = config('OPENAI_API_KEY')
+    API_KEY = config("OPENAI_API_KEY")
     openai.api_key = API_KEY
     main()
