@@ -21,10 +21,14 @@ def make_request(prompt: str) -> str:
                 "role": "system",
                 "content": "You are experienced python developer and you love minimalistic code",
             },
-            {"role": "user", "content": f"{prompt}"},
+            {
+                "role": "user",
+                "content": f"{prompt}"},
         ],
+        temperature=0.8,
+        max_tokens=1024
     )
-    print(response)
+    print(type(response), response["id"], response["choices"], sep="\n")
     return response
 
 
@@ -37,11 +41,12 @@ def main():
     total_tokens_used = 0
     cost_of_response = 0
     st.session_state.triggered_enter = False
+
     # set page configuration for Streamlit
     st.set_page_config(
         page_title="GPT 3.5 Local",
-        page_icon="🧊",
-        layout="centered",
+        page_icon="🧠",
+        layout="wide",
         initial_sidebar_state="expanded",
         menu_items={
             "Get Help": "https://www.extremelycoolapp.com/help",
@@ -51,7 +56,7 @@ def main():
     )
 
     # set header for the page
-    st.header("OpenAI ChatGPT API interface")
+    st.header("OpenAI ChatGPT API interface", divider="rainbow")
 
     # create form to take input from user
     with st.form(key="request_form"):
