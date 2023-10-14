@@ -14,6 +14,10 @@ def make_request(prompt: str) -> str:
     Returns: response str
     response : Response received from OpenAI ChatCompletion API
     """
+    # get API key from config
+    openai.api_key = config("OPENAI_API_KEY")
+
+    # make request
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
@@ -37,11 +41,12 @@ def main():
     total_tokens_used = 0
     cost_of_response = 0
     st.session_state.triggered_enter = False
+
     # set page configuration for Streamlit
     st.set_page_config(
         page_title="GPT 3.5 Local",
-        page_icon="🧊",
-        layout="centered",
+        page_icon="🧠",
+        layout="wide",
         initial_sidebar_state="expanded",
         menu_items={
             "Get Help": "https://www.extremelycoolapp.com/help",
@@ -51,7 +56,7 @@ def main():
     )
 
     # set header for the page
-    st.header("OpenAI ChatGPT API interface")
+    st.header("OpenAI ChatGPT API interface", divider="rainbow")
 
     # create form to take input from user
     with st.form(key="request_form"):
@@ -91,6 +96,4 @@ def main():
 # run the main function
 if __name__ == "__main__":
     # set OpenAI API key
-    API_KEY = config("OPENAI_API_KEY")
-    openai.api_key = API_KEY
     main()
