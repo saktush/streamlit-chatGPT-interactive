@@ -25,10 +25,14 @@ def make_request(prompt: str) -> str:
                 "role": "system",
                 "content": "You are experienced python developer and you love minimalistic code",
             },
-            {"role": "user", "content": f"{prompt}"},
+            {
+                "role": "user",
+                "content": f"{prompt}"},
         ],
+        temperature=0.8,
+        max_tokens=1024
     )
-    print(response)
+    print(type(response), response["id"], response["choices"], sep="\n")
     return response
 
 
