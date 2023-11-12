@@ -14,6 +14,10 @@ def make_request(prompt: str) -> str:
     Returns: response str
     response : Response received from OpenAI ChatCompletion API
     """
+    # get API key from config
+    openai.api_key = config("OPENAI_API_KEY")
+
+    # make request
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
@@ -96,6 +100,4 @@ def main():
 # run the main function
 if __name__ == "__main__":
     # set OpenAI API key
-    API_KEY = config("OPENAI_API_KEY")
-    openai.api_key = API_KEY
     main()
