@@ -1,5 +1,5 @@
-streamlit==1.27.2
+streamlit==1.29.0
 watchdog==3.0.0
-openai==0.28.1
+openai==1.6.0
 python-decouple==3.8
-setuptools==68.2.2
+setuptools==69.0.2
